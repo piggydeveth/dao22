@@ -3,7 +3,7 @@ import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 import "./App.css";
 import { ReactPainter } from "react-painter";
 const { NFTStorage, File, Blob } = require("nft.storage");
-const NFT_STORAGE_TOKEN = "REPLACE_WITH_REAL_KEY";
+const NFT_STORAGE_TOKEN = "";
 const client = new NFTStorage({ token: NFT_STORAGE_TOKEN });
 
 function App() {
@@ -79,6 +79,7 @@ function App() {
                 zIndex: "-10",
                 opacity: "10%",
               }}
+              alt=""
               src={
                 picSources.length ? picSources[picSources.length - 1][0] : ""
               }
@@ -93,7 +94,6 @@ function App() {
   const setSource = async () => {
     if (!ffmpeg.isLoaded()) {
       console.log("not loaded1");
-      // setTimeout(setSource, 20);
       return;
     }
 
@@ -139,8 +139,18 @@ function App() {
       {gifSource.length ? (
         <button
           onClick={async () => {
-            const cid = await client.storeBlob(gifSource[1]);
-            console.log(cid);
+            try {
+              const cid = await client.store({
+                image: new File([gifSource[1]], "roo_gif", {
+                  type: gifSource[1].type,
+                }),
+                name: "my-roo-gif",
+                description: "the coolest roo art there is",
+              });
+              console.log(cid);
+            } catch (e) {
+              console.log(e);
+            }
           }}
         >
           Upload to nft.storage
@@ -155,39 +165,3 @@ function App() {
 }
 
 export default App;
-
-// import React, { useState } from "react";
-// import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
-// import "./App.css";
-// import { file } from "./file.js";
-
-// function App() {
-//   const [videoSrc, setVideoSrc] = useState("");
-//   const [message, setMessage] = useState("Click Start to transcode");
-//   const ffmpeg = createFFmpeg({
-//     log: true,
-//   });
-//   const doTranscode = async () => {
-//     setMessage("Loading ffmpeg-core.js");
-//     await ffmpeg.load();
-//     setMessage("Start transcoding");
-//     ffmpeg.FS("writeFile", "test.avi", await fetchFile(file.djikstra));
-//     await ffmpeg.run("-i", "test.avi", "test.mp4");
-//     setMessage("Complete transcoding");
-//     const data = ffmpeg.FS("readFile", "test.mp4");
-//     setVideoSrc(
-//       URL.createObjectURL(new Blob([data.buffer], { type: "video/mp4" }))
-//     );
-//   };
-//   return (
-//     <div className="App">
-//       <p />
-//       <video src={videoSrc} controls></video>
-//       <br />
-//       <button onClick={doTranscode}>Start</button>
-//       <p>{message}</p>
-//     </div>
-//   );
-// }
-
-// export default App;
