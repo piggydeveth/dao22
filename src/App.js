@@ -98,35 +98,6 @@ function App() {
     }
 
     try {
-      // await ffmpeg.run(
-      //   // ffmpeg -f image2 -framerate 1 -i linear%d.jpg -vf scale=531x299 out.gif
-      //   "-f",
-      //   "image2",
-      //   "-framerate",
-      //   "1",
-      //   "-i",
-      //   "f%3d.jpg",
-      //   "-vf",
-      //   "scale=531x299",
-      //   "test.gif"
-      // );
-      // await ffmpeg.run(
-      //   // this works too, wxcept the first frame carries over to the second one. and you have to use 2 ffmpeg commands
-      //   // ffmpeg -i giff%d.png -vf palettegen=reserve_transparent=1 palette.png
-      //   // ffmpeg -framerate 1 -i giff%d.png -i palette.png -lavfi paletteuse=alpha_threshold=128 -gifflags  treegif.gif
-      //   "-framerate",
-      //   "1",
-      //   "-i",
-      //   "f%3d.png",
-      //   "-i",
-      //   "palette.png",
-      //   "-lavfi",
-      //   "paletteuse=alpha_threshold=128",
-      //   "-gifflags",
-      //   "-offsetting",
-      //   "test.gif"
-      // );
-
       await ffmpeg.run(
         // since png transparent backgrounds and however ffmpeg creates gifs doesn't, we have to convert all transparent color to white.
         // we could also add a background to the canvas, or change the background color since it defaults to transparent
